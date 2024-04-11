@@ -1,0 +1,94 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+    background: linear-gradient(to bottom, #6d07e6, #6d07e6), linear-gradient(to bottom, #f8f3ff, #f8f3ff);
+    font-family: "Bebas Neue", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+main {
+    font-family: "Bebas Neue", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.bg-main {
+    background: linear-gradient(to bottom, #6d07e6, #6d07e6), linear-gradient(to bottom, #f8f3ff, #f8f3ff);
+}
+
+.fixed-card {
+    position: fixed;
+    top: 50%; /* Ajusta según tu preferencia */
+    left: 50%; /* Ajusta según tu preferencia */
+    transform: translate(-50%, -50%);
+    z-index: 1000; /* Ajusta según sea necesario */
+}
+
+.text-main {
+    color: #6d07e6;
+}
+
+
+/*-------------------EN ESPERA------------------------*/
+#espera_contenedor {
+    visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0,0,0,0.8);
+    width: 100%;
+    height: 100%;
+    z-index: 1059;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+
+
+#espera_spin {
+    align-content: center;
+}
+
+#fullscreenDiv {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+    #fullscreenDiv.show {
+        display: flex;
+    }
+
+
+
+#centerButton {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/*-------------------------*/

@@ -1,0 +1,25 @@
+﻿<div class="table-responsive d-flex justify-content-center">
+    <table class="table table-vcenter" id="detallesGasto">
+        <thead>
+            <tr>
+                <th>Gasto</th>
+                <th>Tipo Gasto</th>
+                <th>Plataforma</th>
+                <th>Fecha</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Descripcion</td>
+                    <td>@item.NombreGasto</td>
+                    <td>@item.Billetera</td>
+                    <td>@item.FechaGasto.ToString("d")</td>
+                    <td>@item.TotalGasto</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

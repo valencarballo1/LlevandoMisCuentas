@@ -3,7 +3,6 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
     <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -17,6 +16,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="shortcut icon" href="~/Content/605496_arch_architecture_building_museum_theatre_icon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="~/Content/605496_arch_architecture_building_museum_theatre_icon.ico">
+    <title>Mis gastos - @ViewBag.Title</title>
 </head>
 <body class="row">
     <div class="container-fluid">
@@ -38,8 +40,8 @@
             <main class="container body-content mt-3 col-md-10 col-sm-9 col-10">
                 @RenderBody()
                 <hr />
-                <footer>
-                    <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+                <footer class="pt-5">
+                    <p class="text-light text-center">&copy; @DateTime.Now.Year - Si tenes alguna idea para mejorar el proyecto contactame valentincarballo99@gmail.com</p>
                 </footer>
             </main>
         </div>

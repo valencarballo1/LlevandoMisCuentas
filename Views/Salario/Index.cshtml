@@ -9,13 +9,8 @@
     </div>
 
     <div class="card-body">
-        <div class=" row d-flex justify-content-between align-items-center mb-4">
-            <div class="col-6 d-flex justify-content-center">
-                <span class="badge bg-main"><h5 id="sueldoTotal"></h5></span>
-            </div>
-            <div class="col-6 d-flex justify-content-center">
-                <span class="badge bg-main"><h5 id="totalGastos"></h5></span>
-            </div>
+        <div class="row d-flex justify-content-center align-items-center mb-4">
+            <span class="badge bg-main col-md-3"><h5 id="sueldoTotal"></h5></span>
         </div>
 
 
@@ -28,6 +23,9 @@
                 <div class="pie-chart col-md-8 col-sm-8">
                     <canvas id="pieChart"></canvas>
                     <div id="emptyChartMessage" class="empty-chart-message text-center">No hay gastos disponibles</div>
+                </div>
+                <div class="col-6 d-flex justify-content-center m-3">
+                    <span class="badge bg-main"><h5 id="totalGastos"></h5></span>
                 </div>
                 <div class="d-flex justify-content-center">
                     <button class="btn bg-main text-light" id="verDetalleGasto">Ver gastos</button>
@@ -107,26 +105,20 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
 
-        <div class="modal fade modal-lg" id="modalVerDetalleGasto" tabindex="-1" role="dialog" aria-labelledby="modalVerDetalleGasto" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                    </div>
-                    <div class="modal-detalleGastos" id="modalDetalle">
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <div class="modal fade" id="modalVerTransferencia" tabindex="-1" role="dialog" aria-labelledby="modalVerTransferencia" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                    </div>
-                    <div class="modal-transferencia" id="modalTransferencia">
-                    </div>
-                </div>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Launch demo modal
+</button>
+
+<div class="modal" id="detallesGastoModal" tabindex="-1">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-status bg-success"></div>
+            <div class="modal-body text-center py-4" id="modalBodyVerGastos">
             </div>
         </div>
     </div>
@@ -139,6 +131,7 @@
     const totalGastos = document.querySelector("#totalGastos");
     const agregarNuevoTipoGasto = document.querySelector("#agregarNuevoTipoGasto");
     const agregarSalarioBilletera = document.querySelector("#agregarSalarioBilletera");
+    const verDetalleGasto = document.querySelector("#verDetalleGasto");
 
     $(document).ready(function () {
         console.log(sueldoTotal);
@@ -459,6 +452,26 @@
             }
         }
     }
+
+    verDetalleGasto.addEventListener("click", function () {
+        enEspera();
+        const myModal = new bootstrap.Modal(document.getElementById('detallesGastoModal'));
+        myModal.show();
+
+        $.ajax({
+            url: "@Url.Action("MisGastos", "Gasto")",
+            data: { idSalario: idSalario }, // Suponiendo que 3 es el valor deseado para idSalario
+            type: "GET",
+            success: function (result) {
+                enEspera("chau");
+                $("#modalBodyVerGastos").html(result);
+            },
+
+            error: function () {
+                alert("Error al cargar la vista parcial");
+            }
+        });
+    });
     //-----------------FIN MODALS-----------------
 
     //-----------------FORMULARIOS PARA GRABAR-----------------

@@ -21,6 +21,12 @@ namespace LlevandoMisCuentas.Controllers
             return View();
         }
 
+        public ActionResult MisGastos(int idSalario)
+        {
+            List<DetalleGastoDTO> gastos = _GastoBusiness.GetDetalleGasto(idSalario);
+            return PartialView(gastos);
+        }
+
         public JsonResult GetAllTipoGasto()
         {
             List<TipoGastoDTO> lista = _GastoBusiness.GetAllTipoGasto();

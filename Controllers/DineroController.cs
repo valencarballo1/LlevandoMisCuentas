@@ -53,5 +53,17 @@ namespace LlevandoMisCuentas.Controllers
             bool grabo = _DineroBusiness.Transferir(idSalario, idPlataformaEntrante, idPlataformaSaliente, dineroPlataforma);
             return Json(grabo, JsonRequestBehavior.AllowGet);
         }
+
+        public JsonResult Vaciar(int idSalario, int idSalarioBilletera)
+        {
+            bool grabo = _DineroBusiness.VaciarBilletera(idSalario, idSalarioBilletera);
+            return Json(grabo, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetDineroDisponible(int idSalario)
+        {
+            decimal dineroDisponible = _DineroBusiness.GetDineroDisponible(idSalario);
+            return Json(dineroDisponible, JsonRequestBehavior.AllowGet);
+        }
     }
 }

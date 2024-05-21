@@ -42,6 +42,10 @@ textarea {
     color: #6d07e6;
 }
 
+.separador-negro {
+    border-top: 1px solid black; /* Cambia el grosor de la línea según lo necesites */
+}
+
 
 /*-------------------EN ESPERA------------------------*/
 #espera_contenedor {

@@ -9,9 +9,15 @@
     </div>
 
     <div class="card-body">
-        <div class="row d-flex justify-content-center align-items-center mb-4">
-            <span class="badge bg-main col-md-3"><h5 id="sueldoTotal"></h5></span>
+        <div class="row d-flex justify-content-center align-items-center mb-2">
+            <div class="col-md-6 col-12 d-flex justify-content-center">
+                <span class="badge bg-main"><h5 id="sueldoTotal"></h5></span>
+            </div>
+            <div class="col-md-6 col-12 d-flex justify-content-center mt-2">
+                <span class="badge bg-main"><h5 id="dineroDisponible"></h5></span>
+            </div>
         </div>
+
 
 
 
@@ -31,6 +37,8 @@
                     <button class="btn bg-main text-light" id="verDetalleGasto">Ver gastos</button>
                 </div>
             </div>
+
+            <div class="separador-negro d-md-none d-xl-none mt-2 mb-2"></div>
 
             <div class="row col-md-4 col-sm-12 col-12 p-3 d-flex justify-content-center">
                 <div class="mb-3 d-flex justify-content-center">
@@ -84,6 +92,9 @@
                 </form>
             </div>
 
+            <div class="separador-negro d-md-none d-xl-none mt-2 mb-2"></div>
+
+
             <div class="row col-md-4 col-sm-12 col-12 d-flex justify-content-center align-items-center">
                 <div class="container">
                     <div class="mb-3 d-flex justify-content-center">
@@ -114,7 +125,7 @@
 </button>
 
 <div class="modal" id="detallesGastoModal" tabindex="-1">
-    <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             <div class="modal-status bg-success"></div>
@@ -128,6 +139,7 @@
     const idSalario = @Model.IdSalario;
     const ctx = document.getElementById('pieChart').getContext('2d');
     const sueldoTotal = document.querySelector("#sueldoTotal");
+    const dineroDisponible = document.querySelector("#dineroDisponible");
     const totalGastos = document.querySelector("#totalGastos");
     const agregarNuevoTipoGasto = document.querySelector("#agregarNuevoTipoGasto");
     const agregarSalarioBilletera = document.querySelector("#agregarSalarioBilletera");
@@ -143,17 +155,36 @@
     });
 
     function obtenerSueldoTotal() {
+        enEspera();
         $.ajax({
             url: '@Url.Action("GetSueldoTotal", "Salario")',
             data: { idSalario: idSalario },
             type: 'GET',
             success: function (data) {
+                enEspera("chau");
                 $("#sueldoTotal").html('SUELDO NETO $' + data);
+                obtenerDineroDisponible();
             },
 
             error: function (error) {
                 console.error('Error al obtener el contenido del div:', error);
-                $('#resultado').html('Error al obtener el contenido del div.');
+            }
+        });
+    }
+
+    function obtenerDineroDisponible() {
+
+        $.ajax({
+            url: '@Url.Action("GetDineroDisponible", "Dinero")',
+            data: { idSalario: idSalario },
+            type: 'GET',
+            success: function (data) {
+                $("#dineroDisponible").html('DINERO DISPONIBLE $' + data);
+            },
+
+
+            error: function (error) {
+                console.error('Error al obtener el contenido del div:', error);
             }
         });
     }
@@ -230,7 +261,8 @@
                 $.each(data, function (index, item) {
                     $("#tablaTipoBilletera").append("<tr><td>" + item.NombreBilletera + "</td><td>" + item.Total + "</td>" +
                         "</td><td>" +
-                        '<button class="btn bg-light"> <i class="fa-solid fa-arrow-right-arrow-left clickable" style="color: #1f5125;" onclick="transferir  (' + item.IdBilletera + ')"></i> </button>'
+                        '<button class="btn bg-light"> <i class="fa-solid fa-arrow-right-arrow-left clickable" style="color: #1f5125;" onclick="transferir  (' + item.IdBilletera + ')"></i> </button>'+
+                        '<button class="btn bg-light"> <i class="bi bi-dash-circle-fill clickable" style="color: #FF0000;" onclick="vaciarCuenta(' + item.IdBilletera + ')"></i> </button>'
                         + "</td></tr>");
                 });
             },
@@ -452,6 +484,52 @@
             }
         }
     }
+
+    function vaciarCuenta(idSalarioBilletera) {
+    // Preguntar al usuario antes de proceder
+    Swal.fire({
+        title: '¿Estás seguro de que quieres vaciar la cuenta?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, vaciar cuenta',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Si el usuario confirma, realizar la llamada AJAX
+            $.ajax({
+                url: '@Url.Action("Vaciar", "Dinero")',
+                data: {
+                    idSalario: idSalario,
+                    idSalarioBilletera: idSalarioBilletera
+                },
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    enEspera("chau");
+                    if (data == true) {
+                        Swal.fire({
+                            title: "Se vació la cuenta exitosamente!",
+                            icon: "success",
+                        }).then(() => {
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire({
+                            title: "No se pudo realizar la acción!",
+                            icon: "error",
+                        }).then(() => {
+                            location.reload();
+                        });
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    enEspera("chau");
+                    console.log("Error en la llamada AJAX: " + textStatus + ", " + errorThrown);
+                }
+            });
+        }
+    });
+}
 
     verDetalleGasto.addEventListener("click", function () {
         enEspera();

@@ -1,0 +1,106 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class=" d-flex flex-column">
+    <div class="page page-center">
+        <div class="container container-normal py-4">
+            <div class="row align-items-center g-4">
+                <div class="col-lg">
+                    <div class="container-tight">
+                        <div class="text-center mb-4">
+                            <a href="." class="navbar-brand navbar-brand-autodark"><img src="~/Content/Assets/logoFinance.png" height="95" alt="logoPNG"></a>
+                        </div>
+                        <div class="card card-md">
+                            <div class="card-body row d-flex">
+                                <div class="col-12">
+                                    <h2 class="h2 text-center mb-4">Login to your account</h2>
+                                </div>
+                                <form id="loginForm" action="@Url.Action("Login", "Usuario")" method="GET">
+                                    <div class="input-group mb-2 d-flex justify-content-center">
+                                        <span class="input-group-text">
+                                            <i class="bi bi-person-badge"></i>
+                                        </span>
+                                        <input type="text" class="form-control" placeholder="username" name="UsuNombre" autocomplete="off">
+                                    </div>
+                                    <div class="input-group mb-2 d-flex justify-content-center">
+                                        <input type="password" id="passwordInput" class="form-control" placeholder="Password" name="Contrasena" autocomplete="off">
+                                        <button type="button" class="input-group-text">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                    </div>
+                                    <div class="form-footer">
+                                        <button type="submit" class="btn btn-primary w-100">Sign in</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="text-center text-white mt-3">
+                            Don't have account yet? <a href="./sign-up.html" tabindex="-1">Sign up</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg d-none d-lg-block">
+                    <img src="~/Content/Assets/imgIndex.png" height="400" class="d-block mx-auto" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+        $("#loginForm").submit(function (event) {
+            event.preventDefault();
+            var usuNombre = document.getElementsByName("UsuNombre")[0].value;
+            var contrasena = document.getElementsByName("Contrasena")[0].value;
+
+            $.ajax({
+                url: "@Url.Action("Login", "Usuario")",
+                type: "GET",
+                data: {
+                    usuNombre: usuNombre,
+                    contrasena: contrasena
+                },
+                success: function (response) {
+                    console.log(response);
+                    if (response != null) {
+                        Swal.fire({
+                            title: "Bienvenido " + response.Nombre,
+                            text: "Iniciaste sesión correctamente!",
+                            icon: "success",
+                            showConfirmButton: true
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location = "@Url.Action("Index", "Home")";
+                            }
+                        });
+                    }
+                    else {
+                        Swal.fire({
+                            title: "Error",
+                            text: "Datos incorrectos, por favor vuelva a verificarlos!",
+                            icon: "error",
+                            showConfirmButton: true
+                        }).then((result) => {
+                            document.getElementById("passwordInput").value = "";
+                        });
+                    }
+                },
+                error: function () {
+                    Swal.fire({
+                        title: "Error",
+                        text: "Datos incorrectos, por favor vuelva a verificarlos!",
+                        icon: "error",
+                        showConfirmButton: true
+                    }).then((result) => {
+                        document.getElementById("passwordInput").value = "";
+                    });;
+                }
+            });
+        });
+
+</script>
+
+
+

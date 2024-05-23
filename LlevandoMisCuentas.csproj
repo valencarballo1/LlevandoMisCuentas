@@ -199,6 +199,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\605496_arch_architecture_building_museum_theatre_icon.ico" />
+    <Content Include="Content\Assets\imgIndex.png" />
+    <Content Include="Content\Assets\logoFinance.png" />
     <Content Include="Content\Site.css" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
@@ -209,6 +211,7 @@
     <Compile Include="Controllers\GastoController.cs" />
     <Compile Include="Controllers\SalarioController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -222,6 +225,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Salario\Index.cshtml" />
     <Content Include="Views\Gasto\MisGastos.cshtml" />
+    <Content Include="Views\Usuario\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

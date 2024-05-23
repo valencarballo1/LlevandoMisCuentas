@@ -25,7 +25,7 @@ namespace LlevandoMisCuentas.Controllers
         [HttpGet]
         public JsonResult Login(Usuario usuario)
         {
-            Usuario usuarioExiste = _UsuarioBusiness.Existe(usuario);
+            UsuarioDTO usuarioExiste = _UsuarioBusiness.Login(usuario);
 
             if (usuarioExiste != null)
             {
@@ -54,7 +54,7 @@ namespace LlevandoMisCuentas.Controllers
         [HttpPost]
         public JsonResult Registrarme(UsuarioRegistroDTO usuario)
         {
-            bool registro = _UsuarioBusiness.Registrarme(usuario);
+            UsuarioDTO registro = _UsuarioBusiness.Registrarme(usuario);
             return Json(registro);
         }
     }

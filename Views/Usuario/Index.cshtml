@@ -22,22 +22,25 @@
                                         <span class="input-group-text">
                                             <i class="bi bi-person-badge"></i>
                                         </span>
-                                        <input type="text" class="form-control" placeholder="username" name="UsuNombre" autocomplete="off">
+                                        <input type="text" class="form-control" placeholder="Usuario" name="UsuNombre" autocomplete="off">
                                     </div>
                                     <div class="input-group mb-2 d-flex justify-content-center">
-                                        <input type="password" id="passwordInput" class="form-control" placeholder="Password" name="Contrasena" autocomplete="off">
-                                        <button type="button" class="input-group-text">
+                                        <input type="password" id="passwordInput" class="form-control" placeholder="Contraseña" name="Contrasena" autocomplete="off">
+                                        <button id="togglePassword" type="button" class="input-group-text">
                                             <i class="bi bi-eye"></i>
                                         </button>
                                     </div>
                                     <div class="form-footer">
-                                        <button type="submit" class="btn btn-primary w-100">Sign in</button>
+                                        <button type="submit" class="btn btn-primary w-100">Iniciar Sesion</button>
                                     </div>
                                 </form>
                             </div>
                         </div>
                         <div class="text-center text-white mt-3">
-                            Don't have account yet? <a href="./sign-up.html" tabindex="-1">Sign up</a>
+                            No tienes una cuenta?
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#registroModal">
+                                Registrarme
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -49,8 +52,84 @@
     </div>
 </div>
 
+<div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Registro de usuario</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="registroForm">
+                    <div class="input-group mb-2 d-flex justify-content-center">
+                        <span class="input-group-text">
+                            <i class="bi bi-person-badge"></i>
+                        </span>
+                        <input type="text" class="form-control" placeholder="Usuario" id="usuNombreRegistro" autocomplete="off">
+                    </div>
+                    <div class="input-group mb-2 d-flex justify-content-center">
+                        <input type="password" class="form-control" placeholder="Contraseña" id="contrasenaRegistro" autocomplete="off">
+                        <button id="togglePasswordRegistro" type="button" class="input-group-text">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+                    <div class="input-group mb-2 d-flex justify-content-center">
+                        <span class="input-group-text">
+                            <i class="bi bi-person-vcard"></i>
+                        </span>
+                        <input type="text" class="form-control" placeholder="Nombre" id="nombre" required>
+                    </div>
+                    <div class="input-group mb-2 d-flex justify-content-center">
+                        <span class="input-group-text">
+                            <i class="bi bi-person-vcard"></i>
+                        </span>
+                        <input type="text" class="form-control" placeholder="Apellido" id="apellido" required>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn btn-primary">Registrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
-        $("#loginForm").submit(function (event) {
+
+    document.getElementById("togglePassword").addEventListener("click", function () {
+        const passwordInput = document.getElementById("passwordInput");
+        const toggleIcon = this.querySelector("i");
+
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            toggleIcon.style.fontFamily = "Arial, sans-serif";
+            toggleIcon.classList.remove("bi-eye");
+            toggleIcon.classList.add("bi-eye-slash");
+        } else {
+            passwordInput.type = "password";
+            toggleIcon.classList.remove("bi-eye-slash");
+            toggleIcon.classList.add("bi-eye");
+        }
+    });
+
+    document.getElementById("togglePasswordRegistro").addEventListener("click", function () {
+        const passwordInput = document.getElementById("contrasenaRegistro");
+        const toggleIcon = this.querySelector("i");
+
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            toggleIcon.style.fontFamily = "Arial, sans-serif";
+            toggleIcon.classList.remove("bi-eye");
+            toggleIcon.classList.add("bi-eye-slash");
+        } else {
+            passwordInput.type = "password";
+            toggleIcon.classList.remove("bi-eye-slash");
+            toggleIcon.classList.add("bi-eye");
+        }
+    });
+
+    $("#loginForm").submit(function (event) {
+        enEspera();
             event.preventDefault();
             var usuNombre = document.getElementsByName("UsuNombre")[0].value;
             var contrasena = document.getElementsByName("Contrasena")[0].value;
@@ -63,6 +142,7 @@
                     contrasena: contrasena
                 },
                 success: function (response) {
+                    enEspera("chau");
                     console.log(response);
                     if (response != null) {
                         Swal.fire({
@@ -79,7 +159,7 @@
                     else {
                         Swal.fire({
                             title: "Error",
-                            text: "Datos incorrectos, por favor vuelva a verificarlos!",
+                            text: "Datos incorrectos, por favor vuelva a verificarlos!!",
                             icon: "error",
                             showConfirmButton: true
                         }).then((result) => {
@@ -88,6 +168,7 @@
                     }
                 },
                 error: function () {
+                    enEspera("chau");
                     Swal.fire({
                         title: "Error",
                         text: "Datos incorrectos, por favor vuelva a verificarlos!",
@@ -99,6 +180,63 @@
                 }
             });
         });
+
+    const registroForm = document.getElementById("registroForm");
+
+
+    registroForm.addEventListener("submit", function (event) {
+        enEspera();
+        event.preventDefault(); // Evitar el envío del formulario por defecto
+
+        const usuNombre = document.getElementById("usuNombreRegistro").value;
+        const contrasena = document.getElementById("contrasenaRegistro").value;
+        const nombre = document.getElementById("nombre").value;
+        const apellido = document.getElementById("apellido").value;
+
+        const usuario = {
+            UsuNombre: usuNombre,
+            Contrasena: contrasena,
+            Nombre: nombre,
+            Apellido: apellido
+        };
+
+        $.ajax({
+            url: "@Url.Action("Registrarme", "Usuario")", // Ruta al controlador o método de registro en el servidor
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(usuario),
+            success: function (response) {
+                enEspera("chau");
+                if (response != null) {
+                    Swal.fire({
+                        title: "Bienvenido " + response.Nombre,
+                        text: "Iniciaste sesión correctamente!",
+                        icon: "success",
+                        showConfirmButton: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location = "@Url.Action("Index", "Home")";
+                        }
+                    });
+                }
+                else {
+                    Swal.fire({
+                        title: "Error",
+                        text: "Datos incorrectos, por favor vuelva a verificarlos!!",
+                        icon: "error",
+                        showConfirmButton: true
+                    }).then((result) => {
+                        document.getElementById("passwordInput").value = "";
+                    });
+                }
+            },
+
+            error: function (xhr, status, error) {
+                enEspera("chau");
+                console.error(xhr.responseText);
+            }
+        });
+    });
 
 </script>
 

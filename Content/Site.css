@@ -46,6 +46,13 @@ textarea {
     border-top: 1px solid black; /* Cambia el grosor de la línea según lo necesites */
 }
 
+input[type="password"] {
+    font-family: "Arial", sans-serif; /* Cambia el tipo de letra aquí */
+}
+input[type="text"] {
+    font-family: "Arial", sans-serif; /* Cambia el tipo de letra aquí */
+}
+
 
 /*-------------------EN ESPERA------------------------*/
 #espera_contenedor {

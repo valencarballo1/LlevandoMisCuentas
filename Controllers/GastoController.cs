@@ -18,7 +18,15 @@ namespace LlevandoMisCuentas.Controllers
         }
         public ActionResult Index()
         {
-            return View();
+            if (Request.Cookies["UsuarioSesion"] != null)
+            {
+                string idUsuario = Request.Cookies["UsuarioSesion"]["Id"];
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Usuario");
+            }
         }
 
         public ActionResult MisGastos(int idSalario)
@@ -29,7 +37,8 @@ namespace LlevandoMisCuentas.Controllers
 
         public JsonResult GetAllTipoGasto()
         {
-            List<TipoGastoDTO> lista = _GastoBusiness.GetAllTipoGasto();
+            string idUsuario = Request.Cookies["UsuarioSesion"]["Id"];
+            List<TipoGastoDTO> lista = _GastoBusiness.GetAllTipoGasto(int.Parse(idUsuario));
             return Json(lista, JsonRequestBehavior.AllowGet);
         }
         public JsonResult AgregarGasto(Gasto gasto)
@@ -84,6 +93,28 @@ namespace LlevandoMisCuentas.Controllers
         {
             decimal gastoTotal = _GastoBusiness.GetTotalGastosBySalario(idSalario);
             return Json(gastoTotal, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult Anual()
+        {
+            if (Request.Cookies["UsuarioSesion"] != null)
+            {
+                string idUsuario = Request.Cookies["UsuarioSesion"]["Id"];
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Usuario");
+            }
+        }
+
+        public JsonResult GetGastoAnual()
+        {
+            string idUsuario = Request.Cookies["UsuarioSesion"]["Id"];
+
+            DatosAnualesDTO totalAnual = _GastoBusiness.GetDatosAnuales(int.Parse(idUsuario));
+
+            return Json(totalAnual, JsonRequestBehavior.AllowGet);
         }
     }
 }

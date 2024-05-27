@@ -21,7 +21,6 @@ namespace LlevandoMisCuentas.Controllers
             {
                 string idUsuario = Request.Cookies["UsuarioSesion"]["Id"];
                 return View();
-
             }
             else
             {

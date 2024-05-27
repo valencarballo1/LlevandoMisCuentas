@@ -1,5 +1,6 @@
 ﻿using Business;
 using Data;
+using Data.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,6 +57,15 @@ namespace LlevandoMisCuentas.Controllers
             Salario salario = _SalarioBusiness.GetById(idSalario);
 
             return Json(salario.Sueldo, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetIngresoAnual()
+        {
+            string idUsuario = Request.Cookies["UsuarioSesion"]["Id"];
+
+            DatosIngresosDTO totalAnual = _SalarioBusiness.GetDatosAnuales(int.Parse(idUsuario));
+
+            return Json(totalAnual, JsonRequestBehavior.AllowGet);
         }
     }
 }

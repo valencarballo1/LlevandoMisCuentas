@@ -226,6 +226,7 @@
     <Content Include="Views\Salario\Index.cshtml" />
     <Content Include="Views\Gasto\MisGastos.cshtml" />
     <Content Include="Views\Usuario\Index.cshtml" />
+    <Content Include="Views\Gasto\Anual.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

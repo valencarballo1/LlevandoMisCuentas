@@ -1,0 +1,119 @@
+﻿
+@{
+    ViewBag.Title = "Anual";
+}
+<link href="https://preview.tabler.io/dist/css/tabler.min.css?1695847769" rel="stylesheet">
+<div class="card d-flex justify-content-center">
+    <div class="card-body row">
+
+        <div class="col-sm-6 col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="subheader">
+                            <h2>
+                                Gastos Anuales
+                            </h2>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-baseline">
+                        <div class="h1 mb-0 me-2" id="importeGastoAnual"></div>
+                        <div class="me-auto">
+                            <span class="d-inline-flex align-items-center lh-1">
+                                <span id="porcentajeComparaMes"></span>
+                                <i class="bi bi-coin"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-sm-6 col-lg-6">
+
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="subheader">
+                            <h2>
+                                Ingresos Anuales
+                            </h2>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-baseline">
+                        <div class="h1 mb-3 me-2" id="importeIngresoAnual"></div>
+                        <div class="me-auto">
+                            <span class="text-yellow d-inline-flex align-items-center lh-1">
+                                <span id="porcentajeIngresoAnual"></span>
+                                <i class="bi bi-currency-exchange"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        getInfoAnualGasto();
+        getInfoAnualIngreso();
+    });
+
+    function getInfoAnualGasto() {
+        enEspera();
+        $.ajax({
+            url: '@Url.Action("GetGastoAnual", "Gasto")',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                enEspera("chau");
+                $('#importeGastoAnual').text(data.ImporteGastoAnual);
+                $('#porcentajeComparaMes').text(data.PorcentajeComparaMeses);
+
+                if (data.EsMayorQueMesAnterior) {
+                    $('#porcentajeComparaMes').addClass('text-green');
+                    $('.bi-coin').addClass('text-green');
+                } else {
+                    $('#porcentajeComparaMes').addClass('text-red');
+                    $('.bi-coin').addClass('text-red');
+                }
+            },
+
+            error: function (xhr, status, error) {
+                enEspera("chau");
+                console.error('Error al obtener los datos:', error);
+            }
+        });
+    }
+
+    function getInfoAnualIngreso() {
+    enEspera();
+    $.ajax({
+        url: '@Url.Action("GetIngresoAnual", "Salario")',
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            enEspera("chau");
+            $('#importeIngresoAnual').text(data.ImporteIngresoAnual);
+            $('#porcentajeIngresoAnual').text(data.PorcentajeIngresoAnual);
+
+            if (data.EsMayorQueMesAnterior) {
+                $('#porcentajeIngresoAnual').addClass('text-green');
+                $('.bi-currency-exchange').addClass('text-green');
+            } else {
+                $('#porcentajeComparaMes').addClass('text-red');
+                $('.bi-currency-exchange').addClass('text-red');
+            }
+        },
+
+        error: function (xhr, status, error) {
+            enEspera("chau");
+            console.error('Error al obtener los datos:', error);
+        }
+    });
+}
+</script>

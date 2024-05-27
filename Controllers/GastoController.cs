@@ -74,7 +74,9 @@ namespace LlevandoMisCuentas.Controllers
 
         public JsonResult NuevoTipoGasto(string nombreTipoGasto)
         {
-            bool grabo = _GastoBusiness.GrabarTipoGasto(nombreTipoGasto);
+            string idUsuario = Request.Cookies["UsuarioSesion"]["Id"];
+
+            bool grabo = _GastoBusiness.GrabarTipoGasto(nombreTipoGasto, int.Parse(idUsuario));
             return Json(grabo, JsonRequestBehavior.AllowGet);
         }
 

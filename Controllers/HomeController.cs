@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Business;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,10 +9,24 @@ namespace LlevandoMisCuentas.Controllers
 {
     public class HomeController : Controller
     {
-        // GET: Home
+        private UsuarioBusiness _UsuarioBusiness;
+        public HomeController()
+        {
+            this._UsuarioBusiness = new UsuarioBusiness();
+        }
+
         public ActionResult Index()
         {
-            return View();
+            if (Request.Cookies["UsuarioSesion"] != null)
+            {
+                string idUsuario = Request.Cookies["UsuarioSesion"]["Id"];
+                return View();
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Usuario");
+            }
         }
     }
 }

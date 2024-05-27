@@ -24,7 +24,8 @@ namespace LlevandoMisCuentas.Controllers
 
         public JsonResult GetByPeriodo(string periodo)
         {
-            Salario salario = _SalarioBusiness.GetByPeriodo(int.Parse(periodo));
+            string idUsuario = Request.Cookies["UsuarioSesion"]["Id"];
+            Salario salario = _SalarioBusiness.GetByPeriodo(int.Parse(periodo), int.Parse(idUsuario));
             if(salario == null)
             {
             return Json(new { idSalario = 0 }, JsonRequestBehavior.AllowGet);
@@ -35,10 +36,12 @@ namespace LlevandoMisCuentas.Controllers
 
         public JsonResult Grabar(Salario salario, string periodo)
         {
+            string idUsuario = Request.Cookies["UsuarioSesion"]["Id"];
+
             bool grabo = false;
             int idSalario = 0;
 
-            Salario nuevoSalario = _SalarioBusiness.NuevoSalario(salario, periodo);
+            Salario nuevoSalario = _SalarioBusiness.NuevoSalario(salario, periodo, int.Parse(idUsuario));
             if (nuevoSalario != null)
             {
                 grabo = true;

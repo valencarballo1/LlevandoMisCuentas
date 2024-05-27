@@ -206,6 +206,7 @@
             contentType: "application/json",
             data: JSON.stringify(usuario),
             success: function (response) {
+                console.log(response);
                 enEspera("chau");
                 if (response != null) {
                     Swal.fire({
@@ -233,7 +234,14 @@
 
             error: function (xhr, status, error) {
                 enEspera("chau");
-                console.error(xhr.responseText);
+                Swal.fire({
+                    title: "Error",
+                    text: "Datos incorrectos, por favor vuelva a verificarlos!!",
+                    icon: "error",
+                    showConfirmButton: true
+                }).then((result) => {
+                    document.getElementById("passwordInput").value = "";
+                });
             }
         });
     });

@@ -55,7 +55,14 @@ namespace LlevandoMisCuentas.Controllers
         public JsonResult Registrarme(UsuarioRegistroDTO usuario)
         {
             UsuarioDTO registro = _UsuarioBusiness.Registrarme(usuario);
-            return Json(registro);
+            if(registro != null)
+            {
+                HttpCookie cookie = new HttpCookie("UsuarioSesion");
+                cookie["Id"] = registro.Id.ToString();
+                Response.Cookies.Add(cookie);
+
+            }
+            return Json(registro, JsonRequestBehavior.AllowGet);
         }
     }
 }

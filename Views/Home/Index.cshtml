@@ -66,6 +66,8 @@
     const periodoNuevo = document.querySelector("#periodoNuevoSalario");
     const periodo = document.querySelector("#periodo");
 
+
+
     verSalario.addEventListener("click", function () {
         enEspera();
         periodoBusqueda = periodo.value;
@@ -83,9 +85,8 @@
                         title: "Redirigiendo!",
                         icon: "success",
                     }).then(() => {
-                        window.location.href = '@Url.Action("Index", "Salario")?idSalario=' + data.idSalario;
+                        window.location.href = '@Url.Action("Index", "Salario")';
                     });
-
                 } else {
                     Swal.fire({
                         title: "No se encontro el salario",
@@ -133,9 +134,9 @@
                         title: "El salario fue agregado correctamente",
                         icon: "success",
                     }).then(() => {
-                        window.location.href = '@Url.Action("Index", "Salario")?idSalario=' + response.idSalario;
+                        window.location.href = '@Url.Action("Index", "Salario")';
                     });
-                   
+
                 } else {
                     Swal.fire({
                         title: "Hubo un error en la carga",

@@ -17,9 +17,10 @@ namespace LlevandoMisCuentas.Controllers
             this._SalarioBusiness = new SalarioBusiness();
         }
 
-        public ActionResult Index(int idSalario)
+        public ActionResult Index()
         {
-            Salario salario = _SalarioBusiness.GetById(idSalario);
+            string idSalario = Request.Cookies["idSalario"]["Id"];
+            Salario salario = _SalarioBusiness.GetById(int.Parse(idSalario));
             return View(salario);
         }
 
@@ -27,10 +28,16 @@ namespace LlevandoMisCuentas.Controllers
         {
             string idUsuario = Request.Cookies["UsuarioSesion"]["Id"];
             Salario salario = _SalarioBusiness.GetByPeriodo(int.Parse(periodo), int.Parse(idUsuario));
-            if(salario == null)
+            if (salario == null)
             {
-            return Json(new { idSalario = 0 }, JsonRequestBehavior.AllowGet);
+                return Json(new { idSalario = 0 }, JsonRequestBehavior.AllowGet);
 
+            }
+            else
+            {
+                HttpCookie cookie = new HttpCookie("idSalario");
+                cookie["Id"] = salario.IdSalario.ToString(); // Puedes almacenar más información según tus necesidades
+                Response.Cookies.Add(cookie);
             }
             return Json(new { idSalario = salario.IdSalario }, JsonRequestBehavior.AllowGet);
         }

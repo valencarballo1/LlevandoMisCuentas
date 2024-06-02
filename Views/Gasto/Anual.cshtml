@@ -30,9 +30,7 @@
         </div>
 
 
-        <div class="col-sm-6 col-lg-6">
-
-
+        <div class="col-sm-6 col-lg-6 pt-2">
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
@@ -54,10 +52,30 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-sm-12 col-lg-12 pt-2">
+            <div class="card">
+                <div class="card-body row">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="subheader">
+                            <h2>
+                                Detalles
+                            </h2>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="col-12">
+                            <canvas id="myChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 <script>
+    const ctx = document.getElementById('myChart');
     $(document).ready(function () {
         getInfoAnualGasto();
         getInfoAnualIngreso();
@@ -115,5 +133,45 @@
             console.error('Error al obtener los datos:', error);
         }
     });
-}
+    }
+
+
+    $.ajax({
+        url: '@Url.Action("GetGastosAnuales", "Gasto")',
+        method: 'GET',
+        success: function (response) {
+            const gastosAnuales = response;
+
+            let labels = gastosAnuales.map(function (gasto) {
+                return gasto.TipoGasto;
+            });
+
+            let data = gastosAnuales.map(function (gasto) {
+                return gasto.TotalGasto;
+            });
+
+            var chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Total',
+                        data: data,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        },
+        error: function (xhr, status, error) {
+            // Manejar errores de la solicitud AJAX
+            console.error('Error al obtener los datos de gastos anuales:', error);
+        }
+    });
 </script>

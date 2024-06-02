@@ -3,6 +3,7 @@ using Data;
 using Data.DTO;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -119,6 +120,15 @@ namespace LlevandoMisCuentas.Controllers
             DatosAnualesDTO totalAnual = _GastoBusiness.GetDatosAnuales(int.Parse(idUsuario));
 
             return Json(totalAnual, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetGastosAnuales()
+        {
+            string idUsuario = Request.Cookies["UsuarioSesion"]["Id"];
+
+            List<GastosAnualesDTO> gastosAnuales = _GastoBusiness.GetGastosAnuales(int.Parse(idUsuario));
+
+            return Json(gastosAnuales, JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -29,9 +29,10 @@ namespace LlevandoMisCuentas.Controllers
             }
         }
 
-        public ActionResult MisGastos(int idSalario)
+        public ActionResult MisGastos()
         {
-            List<DetalleGastoDTO> gastos = _GastoBusiness.GetDetalleGasto(idSalario);
+            string idSalario = Request.Cookies["idSalario"]["Id"];
+            List<DetalleGastoDTO> gastos = _GastoBusiness.GetDetalleGasto(int.Parse(idSalario));
             return PartialView(gastos);
         }
 
@@ -47,11 +48,13 @@ namespace LlevandoMisCuentas.Controllers
             return Json(grabo);
         }
 
-        public JsonResult ObtenerDatosGrafico(int idSalario)
+        public JsonResult ObtenerDatosGrafico()
         {
+            string idSalario = Request.Cookies["idSalario"]["Id"];
+
             var tiposDeGasto = new List<string>();
             var cantidadDeGastos = new List<decimal>();
-            List<TipoGastoDTO> lista = _GastoBusiness.GetGastosByIdSalario(idSalario);
+            List<TipoGastoDTO> lista = _GastoBusiness.GetGastosByIdSalario(int.Parse(idSalario));
 
             lista.ForEach(l =>
             {
@@ -89,9 +92,10 @@ namespace LlevandoMisCuentas.Controllers
             return Json(grabo, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult GetTotalGastos(int idSalario)
+        public JsonResult GetTotalGastos()
         {
-            decimal gastoTotal = _GastoBusiness.GetTotalGastosBySalario(idSalario);
+            string idSalario = Request.Cookies["idSalario"]["Id"];
+            decimal gastoTotal = _GastoBusiness.GetTotalGastosBySalario(int.Parse(idSalario));
             return Json(gastoTotal, JsonRequestBehavior.AllowGet);
         }
 

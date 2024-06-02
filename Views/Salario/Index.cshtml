@@ -158,7 +158,8 @@
             type: 'GET',
             success: function (data) {
                 enEspera("chau");
-                $("#sueldoTotal").html('SUELDO NETO $' + data);
+                const dinero = data.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' });
+                $("#sueldoTotal").html('SUELDO NETO ' + dinero);
                 obtenerDineroDisponible();
             },
 
@@ -175,7 +176,8 @@
             data: { idSalario: idSalario },
             type: 'GET',
             success: function (data) {
-                $("#dineroDisponible").html('DINERO DISPONIBLE $' + data);
+                const dinero = data.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' });
+                $("#dineroDisponible").html('DINERO DISPONIBLE ' + dinero);
             },
 
 
@@ -191,7 +193,8 @@
         data: { idSalario: idSalario },
         type: 'GET',
         success: function (data) {
-            $("#totalGastos").html('Gasto Total $' + data);
+            const dinero = data.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' });
+            $("#totalGastos").html('Gasto Total ' + dinero);
         },
 
         error: function (error) {
@@ -255,7 +258,7 @@
                 $("#tablaTipoBilletera").empty();
 
                 $.each(data, function (index, item) {
-                    $("#tablaTipoBilletera").append("<tr><td>" + item.NombreBilletera + "</td><td>" + item.Total + "</td>" +
+                    $("#tablaTipoBilletera").append("<tr><td>" + item.NombreBilletera + "</td><td>" + item.Total.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' }) + "</td>" +
                         "</td><td>" +
                         '<button class="btn bg-light"> <i class="fa-solid fa-arrow-right-arrow-left clickable" style="color: #1f5125;" onclick="transferir  (' + item.IdBilletera + ')"></i> </button>'+
                         '<button class="btn bg-light"> <i class="bi bi-dash-circle-fill clickable" style="color: #FF0000;" onclick="vaciarCuenta(' + item.IdBilletera + ')"></i> </button>'
@@ -555,8 +558,48 @@
         event.preventDefault();
 
         enEspera();
+        const monto = $('#TotalGasto').val();
+        const descripcion = $('#Descripcion').val();
+        const idTipoGasto = $('#tipoGasto').val().toString();
+        const idSalarioBilletera = $('#salarioBilletera').val().toString();
+
+        console.log(monto + " " + descripcion + " " + idTipoGasto + " " + idSalarioBilletera);
+
+        if (descripcion.trim() == "") {
+            Swal.fire({
+                title: "Te olvidaste de ingresar el nombre del gasto",
+                icon: "error",
+            });
+            return false;
+        }
+
+        if (monto.trim() == "") {
+            Swal.fire({
+                title: "Te olvidaste de ingresar el monto",
+                icon: "error",
+            });
+            return false;
+        }
+
+        if (idTipoGasto == "") {
+            Swal.fire({
+                title: "Tenes que elegir un tipo de gasto! si no tenes disponibles crea uno",
+                icon: "error",
+            })
+            return false;
+        }
+
+        if (idSalarioBilletera == "") {
+            Swal.fire({
+                title: "Tenes que elegir una plataforma! si no tenes disponibles crea una",
+                icon: "error",
+            })
+            return false;
+        }
+
 
         const formData = new FormData($(this)[0]);
+
 
 
         $.ajax({
